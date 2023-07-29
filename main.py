@@ -7,14 +7,11 @@ output_prefix = "frame"
 # step 1 - from GIF input, make set of images
 gif_handler.create_images_from_gif(gif_input, output_prefix)
 
-# step 2 - from the set of images, play COLMAP
-subprocess.run(['python', './COLMAP_executable.py'])
-
-# step 3 - from COLMAP output, process the data to input it to the NERF network
-subprocess.run(['python', './colmap2nerf.py'])
+# step 2 - from the set of images, run COLMAP and process the data to input it to the NERF network
+subprocess.run(['python', './scripts/colmap2nerf.py --colmap_matcher exhaustive --run_colmap --aabb_scale 32'])
 
 # step 4 - train NERF network (instant-ngp)
-# - to import the instant-ngp as subprocess
+subprocess.run(['python', './scripts/run.py /outputs'])
 
 # step 5 - find the missing posses
 subprocess.run(['python', './find_missing_posses.py'])
