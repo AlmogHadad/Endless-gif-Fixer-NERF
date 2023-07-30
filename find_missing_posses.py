@@ -1,88 +1,45 @@
 import numpy as np
-import cv2
-import os
 import json
+import os
 
+# Load the JSON data
+with open(os.path.dirname(__file__) + r'\data_example\transforms.json') as json_file:
+    data = json.load(json_file)
 
-def load_data_from_json(filename):
-    with open(filename, 'r') as file:
-        data = json.load(file)
-    return data
+# Extract the transformation matrices for the first and last frames
+transform_matrix_first_frame = np.array(data['frames'][0]['transform_matrix'])
+transform_matrix_last_frame = np.array(data['frames'][-1]['transform_matrix'])
 
+# Number of intermediate frames to generate (excluding the first and last frames)
+num_intermediate_frames = 5
 
-def find_camera_poses(images_data):
-    camera_poses = [np.eye(4)]  # Start with identity matrix for the first image
-    for i in range(1, len(images_data)):
-        # Extract transformation matrix from data
-        pose = np.array(images_data[i]["transform_matrix"])
-        # Accumulate the camera poses
-        prev_pose = camera_poses[-1]
-        new_pose = np.dot(prev_pose, pose)
-        camera_poses.append(new_pose)
+# Perform interpolation between the first and last transformation matrices
+interpolated_frames = []
+for t in np.linspace(0, 1, num_intermediate_frames + 2)[1:-1]:  # Exclude the endpoints (0 and 1)
+    # Interpolate rotation matrix
+    rotation_matrix_interpolated = (1 - t) * transform_matrix_first_frame[:3, :3] + t * transform_matrix_last_frame[:3, :3]
 
-    return camera_poses
+    # Interpolate translation vector
+    translation_vector_interpolated = (1 - t) * transform_matrix_first_frame[:3, 3] + t * transform_matrix_last_frame[:3, 3]
 
+    # Combine rotation and translation into a single transformation matrix
+    intermediate_pose_matrix = np.eye(4)
+    intermediate_pose_matrix[:3, :3] = rotation_matrix_interpolated
+    intermediate_pose_matrix[:3, 3] = translation_vector_interpolated
 
-def interpolate_camera_poses(camera_poses, num_poses):
-    if len(camera_poses) < 2:
-        raise ValueError("At least two camera poses are required for interpolation.")
+    # Append the intermediate frame with its transformation matrix to the new data
+    new_frame = {
+        "file_path": f"./images/interpolated_frame_{t:.2f}.jpg",
+        "sharpness": 0,  # Set the sharpness value as per your requirement
+        "transform_matrix": intermediate_pose_matrix.tolist()
+    }
+    interpolated_frames.append(new_frame)
 
-    # Calculate the interpolation step for the poses
-    interpolation_step = 1.0 / (num_poses + 1)
+# Append the new frames to the existing frames
+data['frames'].extend(interpolated_frames)
 
-    # Get the first and last camera poses
-    first_pose = camera_poses[0]
-    last_pose = camera_poses[-1]
+# Save the updated data to a new JSON file
+with open('updated_data.json', 'w') as json_file:
+    json.dump(data, json_file, indent=2)
 
-    interpolated_poses = []
-    for i in range(1, num_poses + 1):
-        # Interpolate the camera poses using linear interpolation
-        t = interpolation_step * i
-        interpolated_pose = np.linalg.inv(first_pose) @ last_pose
-        interpolated_pose[:3, 3] = t * interpolated_pose[:3, 3]
-        interpolated_poses.append(interpolated_pose)
-
-    return interpolated_poses
-
-
-if __name__ == "__main__":
-    # Get the current script directory
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Define the filename of the JSON file
-    json_filename = "fox/transforms.json"
-
-    # Get the full path to the JSON file
-    json_path = os.path.join(script_dir, json_filename)
-
-    # Load the data from the JSON file
-    data = load_data_from_json(json_path)
-
-    # Now 'data' contains the content of the JSON file, and you can access the required information as follows:
-    camera_angle_x = data["camera_angle_x"]
-    camera_angle_y = data["camera_angle_y"]
-    fl_x = data["fl_x"]
-    fl_y = data["fl_y"]
-    k1 = data["k1"]
-    k2 = data["k2"]
-    # ... and so on
-
-    # Accessing the frames' information:
-    frames_data = data["frames"]
-    for frame in frames_data:
-        file_path = frame["file_path"]
-        sharpness = frame["sharpness"]
-        transform_matrix = frame["transform_matrix"]
-
-
-    # Step 1 & 2: Extract and match features (not provided in data)
-
-    # Step 3 & 4: Camera Pose Estimation
-    camera_poses = find_camera_poses(data["frames"])
-
-    # Step 5: Interpolation
-    num_poses_between = 5
-    intrinsic_params = [data["fl_x"], data["fl_y"], data["cx"], data["cy"]]
-    interpolated_poses = interpolate_camera_poses(camera_poses, num_poses_between)
-
-    # Your interpolated camera poses and intrinsic parameters are now stored in the 'interpolated_poses' list
+print("New data with interpolated frames has been created and saved as 'updated_data.json'.")
