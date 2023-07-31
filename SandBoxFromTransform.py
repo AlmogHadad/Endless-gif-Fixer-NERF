@@ -74,7 +74,8 @@ def plot_camera_positions_with_direction(json_data):
         # Plot camera frustum
         plot_camera_frustum(camera_position, orientation_vector)
 
-    ax.scatter(camera_positions_x, camera_positions_y, camera_positions_z, marker='o', s=100)
+    ax.scatter(camera_positions_x, camera_positions_y, camera_positions_z, marker='o', s=30)
+
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
@@ -91,5 +92,9 @@ with open(os.path.dirname(__file__) + r'\data_example\transforms.json', 'r') as 
 plot_camera_positions_with_direction(json_data)
 
 with open(os.path.dirname(__file__) + r'\data_example\updated_data.json', 'r') as file:
+    json_data = file.read()
+plot_camera_positions_with_direction(json_data)
+
+with open(os.path.dirname(__file__) + r'\data_example\updated_data_2.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)
