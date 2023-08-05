@@ -14,9 +14,11 @@ instant-ngp (NERF) repo (submodule in our project): https://github.com/NVlabs/in
 
 ### perform linear interpolation - between last and first point
 
-![](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/076309ff-59bf-437d-9c9e-974320f50295)
-![](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/ad4999ad-fd0e-46d3-9a59-e86509a87f1d)
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/076309ff-59bf-437d-9c9e-974320f50295" width=250>
+
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/ad4999ad-fd0e-46d3-9a59-e86509a87f1d" width=250>
 
 ### perforn Polynomial interpolation
-![](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/076309ff-59bf-437d-9c9e-974320f50295)
-![](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/0747ecb3-0051-4995-83ae-56263fca4ab2)
+
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/076309ff-59bf-437d-9c9e-974320f50295" width=250>
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/0747ecb3-0051-4995-83ae-56263fca4ab2" width=250>
