@@ -28,5 +28,12 @@ instant-ngp (NERF) repo (submodule in our project): https://github.com/NVlabs/in
 ### sulotion 1 - widest angle of 2 last point
 choosing the point that creates the most obtuse angle (less than 180 degrees) with the last two points, and deleting all the points from the beginning of the gif to it and rebuilding by using polynimial interpolation
 
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/4b6370d5-0161-47a1-afbd-62b6b0000365" width=500>
+
+
 ### sulotion 2 - the smallest sum of distances
 Start with the first three points and create a circle that will result in the smallest sum of distances between the points and the arc of the circle. At each step, the next point is added and the sum of the distances is updated. At the point where the sum of the distances increases, cut off the end of the video and rebuild it by polynomial interpolation.
+
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/fa81e5e4-4394-4ff6-ae13-c624ed353e7d">
+
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/f744ebc6-a86e-4be7-8644-96014e36cda4">
