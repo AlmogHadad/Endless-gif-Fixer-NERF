@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,6 +7,8 @@ import json
 import os
 from random import random
 
+
+GAP_EDGE = 10
 def circle_data():
     # Parameters of the circle
     radius = 1.0
@@ -20,7 +21,7 @@ def circle_data():
     z = np.random.uniform(-0.2, 0.2, num_points)  # Random z values in the range [-0.1, 0.1]
 
     circle = np.column_stack([x, y, z])
-    circle = circle[20:]
+    circle = circle[2*GAP_EDGE:]
     return circle
 
 
@@ -134,15 +135,10 @@ num_intermediate_frames = frame_rate_function(data)
 
 start_p = data[0]
 end_p = data[-1]
-points_left = data[:10]
-points_right = data[-10:]
+points_left = data[:GAP_EDGE]
+points_right = data[-GAP_EDGE:]
 
 
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import numpy as np
-import matplotlib.pyplot as plt
 
 class NonlinearApproximator(nn.Module):
     def __init__(self):
@@ -176,9 +172,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.01)
 # Generate synthetic data
 # time_data, target_data = generate_data()
 target_data = np.concatenate((points_right, points_left))
-time_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10+num_intermediate_frames, 11+num_intermediate_frames, 12+num_intermediate_frames,
-             13+num_intermediate_frames, 14+num_intermediate_frames, 15+num_intermediate_frames, 16+num_intermediate_frames,
-             17+num_intermediate_frames, 18+num_intermediate_frames, 19+num_intermediate_frames]
+time_data = [i for i in range(1,GAP_EDGE+1)] + [j +num_intermediate_frames for j in range(GAP_EDGE,2*GAP_EDGE)]
 time_data = torch.tensor(time_data, dtype=torch.float32).unsqueeze(1)  # Convert to 2D tensor
 target_data = torch.tensor(target_data, dtype=torch.float32)
 
@@ -199,7 +193,7 @@ with torch.no_grad():
     x_fit, y_fit, z_fit = predicted_xyz[:, 0], predicted_xyz[:, 1], predicted_xyz[:, 2]
 
 with torch.no_grad():
-    new_time_data = [i+10 for i in range(num_intermediate_frames)]
+    new_time_data = [i+GAP_EDGE for i in range(num_intermediate_frames)]
     new_time_data = torch.tensor(new_time_data, dtype=torch.float32).unsqueeze(1)  # Convert to 2D tensor
     predicted_xyz = model(new_time_data)
     x_new, y_new, z_new = predicted_xyz[:, 0], predicted_xyz[:, 1], predicted_xyz[:, 2]
