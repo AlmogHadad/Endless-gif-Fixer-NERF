@@ -72,9 +72,11 @@ def plot_camera_positions_with_direction(json_data):
         camera_positions_z.append(camera_position[2])
 
         # Plot camera frustum
-        plot_camera_frustum(camera_position, orientation_vector)
+        # plot_camera_frustum(camera_position, orientation_vector)
 
-    ax.scatter(camera_positions_x, camera_positions_y, camera_positions_z, marker='o', s=30)
+    ax.scatter(camera_positions_x, camera_positions_y, camera_positions_z, marker='o', s=10)
+    ax.scatter(camera_positions_x[0], camera_positions_y[0], camera_positions_z[0], marker='o', s=15, color='red')
+    ax.scatter(camera_positions_x[-1], camera_positions_y[-1], camera_positions_z[-1], marker='o', s=15, color='red')
 
 
     ax.set_xlabel('X')
@@ -86,15 +88,18 @@ def plot_camera_positions_with_direction(json_data):
 
 # Example usage:
 # Assuming your JSON data is stored in a file called 'data.json'
-with open(os.path.dirname(__file__) + r'\data_example\transforms.json', 'r') as file:
-    json_data = file.read()
+# with open('data_example/horse_gap_old/transforms.json', 'r') as file:
+#     json_data = file.read()
+# plot_camera_positions_with_direction(json_data)
 
+with open('./data_example/transforms.json', 'r') as file:
+    json_data = file.read()
 plot_camera_positions_with_direction(json_data)
 
-with open(os.path.dirname(__file__) + r'\data_example\updated_data.json', 'r') as file:
+with open('./data_example/transforms2.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)
 
-with open(os.path.dirname(__file__) + r'\data_example\updated_data_2.json', 'r') as file:
+with open('./data_example/transforms3.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)

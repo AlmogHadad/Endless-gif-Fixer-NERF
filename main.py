@@ -14,6 +14,7 @@ subprocess.run(['python', './scripts/colmap2nerf.py --colmap_matcher exhaustive 
 subprocess.run(['python', './scripts/run.py /outputs'])
 
 # step 5 - find the missing posses
+subprocess.run(['python', './cut_overlap_poses.py'])
 subprocess.run(['python', './find_missing_posses.py'])
 
 # step 6 - extract missing posses from the NERF

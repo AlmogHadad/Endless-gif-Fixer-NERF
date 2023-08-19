@@ -54,15 +54,15 @@ def find_intersection_point(points):
                     if do_line_segments_intersect(line1, line2):
                         plt.plot([line1[0][0], line1[1][0]], [line1[0][1], line1[1][1]], color='blue')
                         plt.plot([line2[0][0], line2[1][0]], [line2[0][1], line2[1][1]], color='green')
-                        # plt.scatter(points[j][0], points[j][1], color='brown', s=50)
-                        # plt.scatter(points[j+1][0], points[j+1][1], color='yellow', s=50)
-                        # plt.scatter(points[i][0], points[i][1], color='grey', s=50)
-                        # plt.scatter(middle_point[0], middle_point[1], color='pink', s=50)
+                        plt.scatter(points[j][0], points[j][1], color='brown', s=50)
+                        plt.scatter(points[j+1][0], points[j+1][1], color='yellow', s=50)
+                        plt.scatter(points[i][0], points[i][1], color='grey', s=50)
+                        plt.scatter(middle_point[0], middle_point[1], color='pink', s=50)
                         # plt.show()
-                        return points[i], points[i-1]
+                        return i, points[i], points[i-1]
 
     # If no intersection is found, return the point and its adjacent points
-    return points[-1], points[-2], None
+    return -1, points[-1], points[-2], None
 
 
 def do_line_segments_intersect(segment1, segment2):
@@ -111,7 +111,7 @@ def calculate_angle_between_lines(points):
     # for i in points:
     #     if i[0]
     # Calculate the vector of the last line segment
-    last_point, second_last_point = find_intersection_point(points)
+    index_last_point, last_point, second_last_point = find_intersection_point(points)
 
     last_line_vector = (last_point[0] - second_last_point[0], last_point[1] - second_last_point[1])
 
@@ -134,13 +134,13 @@ def calculate_angle_between_lines(points):
         angle_degrees = math.degrees(angle_radians)
         angles.append(angle_degrees)
 
-    return angles, last_point, second_last_point
+    return angles, last_point, second_last_point, index_last_point
 
 def plot_circle_and_points(points, x0, y0, z0, radius):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    for point in points:
+    for idx, point in enumerate(points):
         x, y, z = point
         ax.scatter(x, y, z, color='blue', marker='o')
 
@@ -210,37 +210,38 @@ def plot_camera_positions_with_direction(json_data):
     points = []
     for x, y in zip(camera_positions_x, camera_positions_y):
         points.append((x, y))
-    angles, last_point, second_last_point = calculate_angle_between_lines(points)
+    angles, last_point, second_last_point, index_last_point = calculate_angle_between_lines(points)
     print(angles)
     # Find the index of the biggest angle
     index_of_biggest_angle = angles.index(max(angles))
     print(index_of_biggest_angle)
 
-    plt.plot([points[index_of_biggest_angle][0], last_point[0], second_last_point[0]], [points[index_of_biggest_angle][1], last_point[1], second_last_point[1]], 'ro-')
+    # plt.plot([points[index_of_biggest_angle][0], last_point[0], second_last_point[0]], [points[index_of_biggest_angle][1], last_point[1], second_last_point[1]], 'ro-')
 
     ax.scatter(camera_positions_x, camera_positions_y, camera_positions_z, marker='o', s=10)
-    #
-    # ax.set_xlabel('X')
-    # ax.set_ylabel('Y')
-    # ax.set_zlabel('Z')
-    # ax.set_title('Camera Positions with Direction of View and Camera Frustums')
-    # plt.show()
-    return index_of_biggest_angle
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_title('Camera Positions with Direction of View and Camera Frustums')
+    plt.show()
+    return index_of_biggest_angle, index_last_point
 
 
 # Example usage:
 # Assuming your JSON data is stored in a file called 'data.json'
-with open(r'C:\Users\almog\Documents\nerf project\Endless-gif-Fixer-NERF\data_example\transforms_complete.json', 'r') as file:
+with open('./data_example/transforms.json', 'r') as file:
     json_data = file.read()
 
-angle_index = plot_camera_positions_with_direction(json_data)
+angle_index, last_point = plot_camera_positions_with_direction(json_data)
 
 # Remove the first 10 items from the 'frames' array
 # Load JSON data
 data = json.loads(json_data)
 
-data['frames'] = data['frames'][angle_index:]
+print(angle_index, " ", last_point)
+data['frames'] = data['frames'][angle_index:last_point]
 
 # Write the modified JSON data back to the file
-with open('overlap_transforms.json', 'w') as file:
+with open('./data_example/transforms2.json', 'w') as file:
     json.dump(data, file, indent=2)

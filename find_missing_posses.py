@@ -3,7 +3,7 @@ import json
 import os
 
 # Load the JSON data
-with open(os.path.dirname(__file__) + r'\data_example\transforms.json') as json_file:
+with open('data_example/horse_gap_old/transforms.json') as json_file:
     data = json.load(json_file)
 
 # Extract the transformation matrices for the first and last frames
@@ -39,7 +39,7 @@ for t in np.linspace(0, 1, num_intermediate_frames + 2)[1:-1]:  # Exclude the en
 data['frames'].extend(interpolated_frames)
 
 # Save the updated data to a new JSON file
-with open('updated_data.json', 'w') as json_file:
+with open('./data_example/horse_gap_old/transforms3.json', 'w') as json_file:
     json.dump(data, json_file, indent=2)
 
-print("New data with interpolated frames has been created and saved as 'updated_data.json'.")
+# print("New data with interpolated frames has been created and saved as 'updated_data.json'.")

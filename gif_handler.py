@@ -85,3 +85,5 @@ def create_images_from_gif(input_path, output_path):
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+create_gif_from_images(r".\data_example\horse_overlap", "linear.gif")
