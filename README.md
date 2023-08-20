@@ -16,6 +16,9 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 
 6. creating fixed gif
 
+## example - images
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/51ee6206-4b67-4025-8c69-a5754debc782" width=500>
+
 ## solution ways - gap between the end and start point
 
 ### try 1 - perform linear interpolation - between last and first point
