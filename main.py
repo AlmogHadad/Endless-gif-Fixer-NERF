@@ -15,7 +15,7 @@ subprocess.run(['python', './scripts/run.py /outputs'])
 
 # step 5 - find the missing posses
 subprocess.run(['python', './cut_overlap_poses.py'])
-subprocess.run(['python', './find_missing_posses.py'])
+subprocess.run(['python', './Interpolation1.py'])
 
 # step 6 - extract missing posses from the NERF
 subprocess.run(['python', './extract_posses.py'])
