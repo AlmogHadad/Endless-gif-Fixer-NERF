@@ -123,7 +123,7 @@ model = NonlinearApproximator()
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 
-PATH = r'data_example\transforms2.json'
+PATH = r'data_example\SandBox\transforms2.json'
 with open(PATH, 'r') as file:
     # Initialize an empty list to store the rows of data
     mat = file.read()
@@ -226,7 +226,7 @@ ax.set_title('Polynomial Regression')
 plt.show()
 
 
-with open('./data_example/transforms2.json', 'r') as file:
+with open('./data_example/SandBox/transforms2.json', 'r') as file:
     json_data = file.read()
 
 data = json.loads(json_data)
@@ -260,5 +260,5 @@ for t in np.linspace(0, 1, num_intermediate_frames + 2)[1:-1]:  # Exclude the en
 data['frames'].extend(interpolated_frames)
 
 # Write the modified JSON data back to the file
-with open('./data_example/transforms3.json', 'w') as file:
+with open('./data_example/SandBox/transforms3.json', 'w') as file:
     json.dump(data, file, indent=2)

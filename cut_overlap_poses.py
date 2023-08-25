@@ -2,8 +2,12 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import numpy as np
 from scipy.optimize import minimize
+
+###
+from scipy.spatial.distance import pdist, squareform
+from sklearn.cluster import KMeans
+###
 
 
 import math
@@ -227,6 +231,39 @@ def plot_camera_positions_with_direction(json_data):
     plt.show()
     return index_of_biggest_angle, index_last_point
 
+def shrinking_distances(data):
+
+    camera_positions_x = []
+    camera_positions_y = []
+    camera_positions_z = []
+
+    # Extract camera positions and orientation vectors from each frame's transformation matrix
+    for frame in data["frames"]:
+        matrix = np.array(frame["transform_matrix"])
+        camera_position = matrix[:3, 3]
+        camera_positions_x.append(camera_position[0])
+        camera_positions_y.append(camera_position[1])
+        camera_positions_z.append(camera_position[2])
+
+    camera_positions = np.column_stack((camera_positions_x, camera_positions_y, camera_positions_z))
+    length = len(camera_positions)
+    # Calculate pairwise distances between camera positions
+    dist_matrix = squareform(pdist(camera_positions))
+    half_dist_matrix = dist_matrix.copy()
+    for i in range(length):
+        for j in range(length):
+            half_dist_matrix[i,j] = float('inf') if abs(i-j)<length//2 else half_dist_matrix[i,j]
+
+    min_index = np.argmin(half_dist_matrix)
+    row_index, col_index = np.unravel_index(min_index, half_dist_matrix.shape)
+    if row_index < col_index:
+        # cut_positions = camera_positions[row_index:col_index]
+        return row_index, col_index
+    else:
+        # cut_positions = camera_positions[col_index:row_index]
+        return  col_index,row_index
+
+    # return cut_positions
 
 # Example usage:
 # Assuming your JSON data is stored in a file called 'data.json'
@@ -239,9 +276,14 @@ angle_index, last_point = plot_camera_positions_with_direction(json_data)
 # Load JSON data
 data = json.loads(json_data)
 
-print(angle_index, " ", last_point)
-data['frames'] = data['frames'][angle_index:last_point]
+# dist_matrix = shrinking_distances(data)
+start_idx,end_idx = shrinking_distances(data)
+
+print(angle_index, last_point)
+print(start_idx,end_idx)
+# data['frames'] = data['frames'][angle_index:last_point]
+data['frames'] = data['frames'][start_idx:end_idx]
 
 # Write the modified JSON data back to the file
-with open('./data_example/transforms2.json', 'w') as file:
+with open('./data_example/SandBox/transforms2.json', 'w') as file:
     json.dump(data, file, indent=2)

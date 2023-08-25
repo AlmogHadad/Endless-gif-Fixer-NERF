@@ -1,52 +1,46 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
-
-# Define the 3D points
-data = []
-# Open the text file
-with open('D:\GitHub\Reposetories\Endless-gif-Fixer-NERF\data_example\colmap_text\points3D.txt', 'r') as file:
-    # Initialize an empty list to store the rows of data
+from scipy.spatial.distance import pdist, squareform
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 
 
-    # Read each line in the file
-    for line in file:
-        # Split the line into individual elements using whitespace as the delimiter
-        row = line.split()
 
-        # Convert each element from string to integer and add it to the data list
-        data.append([s for s in row])
+# Calculate pairwise distances between camera positions
+dist_matrix = squareform(pdist(camera_positions))
 
+# Define distance threshold for overlap
+overlap_threshold = 0.5  # Adjust based on your scenario
 
-XYZ = []
-for i,row in enumerate(data[3:]):
-    temp=[]
-    if i==500:
-        break
-    for point in row[4:7]:
-        temp.append(point)
-    XYZ.append((temp[0], temp[1], temp[2]))
-# Create a 3D figure
+# Find overlapping pairs
+overlap_pairs = np.argwhere(dist_matrix < overlap_threshold)
+
+# Perform k-means clustering on camera positions
+num_clusters = 3  # Adjust based on your scenario
+kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(camera_positions)
+clusters = kmeans.labels_
+
+# Create a 3D scatter plot to visualize camera positions
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-# Extract x, y, and z coordinates for each point
-x_coords = [p[0] for p in XYZ]
-y_coords = [p[1] for p in XYZ]
-z_coords = [p[2] for p in XYZ]
+# Plot camera positions with different colors for clusters
+for i in range(num_clusters):
+    cluster_mask = clusters == i
+    ax.scatter(camera_positions[cluster_mask, 0],
+               camera_positions[cluster_mask, 1],
+               camera_positions[cluster_mask, 2],
+               label=f'Cluster {i + 1}')
 
-# Convert the data to NumPy arrays with float data type
-x_coords = np.array(x_coords, dtype=float)
-y_coords = np.array(y_coords, dtype=float)
-z_coords = np.array(z_coords, dtype=float)
+# Highlight overlapping camera positions
+for pair in overlap_pairs:
+    ax.plot(camera_positions[pair, 0], camera_positions[pair, 1], camera_positions[pair, 2], color='red')
 
-# Plot the points as a scatter plot
-ax.scatter(x_coords, y_coords, z_coords, color='red', marker='o', s=10)
-
-# Set axis labels
+# Set labels and title
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
+ax.set_title('Camera Positions and Overlap Detection')
+ax.legend()
 
 # Show the plot
 plt.show()

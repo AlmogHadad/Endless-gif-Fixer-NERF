@@ -96,10 +96,10 @@ with open('./data_example/transforms.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)
 
-with open('./data_example/transforms2.json', 'r') as file:
+with open('./data_example/SandBox/transforms2.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)
 
-with open('./data_example/transforms3.json', 'r') as file:
+with open('./data_example/SandBox/transforms3.json', 'r') as file:
     json_data = file.read()
 plot_camera_positions_with_direction(json_data)
