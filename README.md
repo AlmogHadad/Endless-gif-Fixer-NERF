@@ -16,6 +16,12 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 
 6. creating fixed gif
 
+## example - images
+### guess the fake image:
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/89c2bc60-f62f-49be-a3ff-10afd64141c9" width=500 hight=250>
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/791ee1ad-3be5-464a-9406-edcc8fe1417b" width=500 hight=250>
+
+
 ## solution ways - gap between the end and start point
 
 ### try 1 - perform linear interpolation - between last and first point
