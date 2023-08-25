@@ -111,12 +111,13 @@ def calculate_angle_between_lines(points):
     # Extract the last two points
     # last_point = points[-1]
     # second_last_point = points[-2]
-    middle_point = find_middle_point(points)
+    # middle_point = find_middle_point(data)
     # for i in points:
     #     if i[0]
     # Calculate the vector of the last line segment
-    index_last_point, last_point, second_last_point = find_intersection_point(points)
-
+    # index_last_point, last_point, second_last_point = find_intersection_point(points)
+    last_point = points[-1]
+    second_last_point = points[-2]
     last_line_vector = (last_point[0] - second_last_point[0], last_point[1] - second_last_point[1])
 
     angles = []
@@ -137,7 +138,7 @@ def calculate_angle_between_lines(points):
         # Convert the angle from radians to degrees
         angle_degrees = math.degrees(angle_radians)
         angles.append(angle_degrees)
-
+    index_last_point = len(points)-1
     return angles, last_point, second_last_point, index_last_point
 
 def plot_circle_and_points(points, x0, y0, z0, radius):
@@ -179,9 +180,9 @@ def find_optimal_circle(points):
     # plot_circle_and_points(points, x0, y0, z0, radius)
     return sum_of_distances_to_circle([x0, y0, z0, radius], points) / len(points)
 
-def plot_camera_positions_with_direction(json_data):
+def plot_camera_positions_with_direction(data):
     # Load JSON data
-    data = json.loads(json_data)
+    # data = json.loads(json_data)
 
     # Function to extract camera positions and orientation vectors from the transformation matrix
     def extract_camera_position_and_orientation(matrix):
@@ -257,20 +258,17 @@ def shrinking_distances(data):
     min_index = np.argmin(half_dist_matrix)
     row_index, col_index = np.unravel_index(min_index, half_dist_matrix.shape)
     if row_index < col_index:
-        # cut_positions = camera_positions[row_index:col_index]
         return row_index, col_index
     else:
-        # cut_positions = camera_positions[col_index:row_index]
         return  col_index,row_index
 
-    # return cut_positions
 
 # Example usage:
 # Assuming your JSON data is stored in a file called 'data.json'
 with open('./data_example/transforms.json', 'r') as file:
     json_data = file.read()
 
-angle_index, last_point = plot_camera_positions_with_direction(json_data)
+
 
 # Remove the first 10 items from the 'frames' array
 # Load JSON data
@@ -278,11 +276,13 @@ data = json.loads(json_data)
 
 # dist_matrix = shrinking_distances(data)
 start_idx,end_idx = shrinking_distances(data)
-
-print(angle_index, last_point)
 print(start_idx,end_idx)
-# data['frames'] = data['frames'][angle_index:last_point]
 data['frames'] = data['frames'][start_idx:end_idx]
+
+angle_index, last_point = plot_camera_positions_with_direction(data)
+print(angle_index, last_point)
+data['frames'] = data['frames'][angle_index:last_point]
+
 
 # Write the modified JSON data back to the file
 with open('./data_example/SandBox/transforms2.json', 'w') as file:
