@@ -1,4 +1,8 @@
 # Endless-gif-Fixer-NERF
+Authors:
+  - Meir Goldberg
+  - Almog Hadad
+
 Given a GIF that endlessly repeats, but with detectable end and start points, the Endless-GIF-Fixer-NERF corrects the GIF by adding or removing new camera poses and smoothing the route through the construction of a 3D image using NERF networks and retrieving the necessary poses.
 
 using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVlabs/instant-ngp
