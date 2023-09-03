@@ -248,6 +248,11 @@ def shrinking_distances(data):
 
     camera_positions = np.column_stack((camera_positions_x, camera_positions_y, camera_positions_z))
     length = len(camera_positions)
+
+    # data std and average consecutive distance
+    camera_positions_std, average_distance = std_and_avg(camera_positions)
+
+
     # Calculate pairwise distances between camera positions
     dist_matrix = squareform(pdist(camera_positions))
     half_dist_matrix = dist_matrix.copy()
@@ -257,11 +262,50 @@ def shrinking_distances(data):
 
     min_index = np.argmin(half_dist_matrix)
     row_index, col_index = np.unravel_index(min_index, half_dist_matrix.shape)
-    if row_index < col_index:
-        return row_index, col_index
-    else:
-        return  col_index,row_index
+    if row_index > col_index:
+        tmp = col_index
+        col_index = row_index
+        row_index = tmp
+    row_index, col_index = adjusted_distance_indexes(row_index, col_index, camera_positions_std, average_distance, dist_matrix)
 
+    return row_index, col_index
+
+
+def std_and_avg(points):
+    # Calculate standard deviation of data and retrieve the minimal std between axises
+    camera_positions_std = np.min(np.std(points,axis=0))
+
+    # Avrange distance between consecutive 3d points
+    # Compute the differences between consecutive points
+    differences = np.diff(points, axis=0)
+
+    # Compute the Euclidean distances between consecutive points
+    distances = np.linalg.norm(differences, axis=1)
+
+    # Compute the average distance
+    average_distance = np.mean(distances)
+
+    return camera_positions_std, average_distance
+
+def adjusted_distance_indexes(row,col,std,avg,mat):
+    limiter = 0
+    # std = std if std >1 else 1/std
+    # avg = avg if avg >1 else 1/avg
+    distance = np.sqrt(std+avg)
+    distance = distance if distance > 1 else 1/distance
+    distance = distance + mat[row][col]
+    i,j = row,col
+    while distance > mat[i][j] and limiter < len(mat[0]):
+        if mat[i+1][j] < mat[i][j-1]:
+            i += 1
+        else:
+            j -= 1
+        limiter+=1
+
+    if limiter >= len(mat[0]):
+        return row,col
+
+    return i,j
 
 # Example usage:
 # Assuming your JSON data is stored in a file called 'data.json'
@@ -279,9 +323,9 @@ start_idx,end_idx = shrinking_distances(data)
 print(start_idx,end_idx)
 data['frames'] = data['frames'][start_idx:end_idx]
 
-angle_index, last_point = plot_camera_positions_with_direction(data)
-print(angle_index, last_point)
-data['frames'] = data['frames'][angle_index:last_point]
+# angle_index, last_point = plot_camera_positions_with_direction(data)
+# print(angle_index, last_point)
+# data['frames'] = data['frames'][angle_index:last_point]
 
 
 # Write the modified JSON data back to the file
