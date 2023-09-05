@@ -12,15 +12,19 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 
 2. perform COLMAP and get camera poses for each of the images
 
-3. . Process the data output of the COLMAP to the nerf network
+3. Process the data output of the COLMAP to the nerf network
 
 4. train and run NERF
 
 5. retrive the missing posses from the last frame to the first one
+   - cut overlap poses (if exists)
+   - perform interpolation using a fully connected neural network
 
-6. creating fixed gif
+6. extract the missing poses from the NERF
+ 
+7. creating fixed gif
 
-## example - images
+## image from nerf (from train set)
 ### guess the fake image:
 <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/89c2bc60-f62f-49be-a3ff-10afd64141c9" width=500 hight=250>
 <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/791ee1ad-3be5-464a-9406-edcc8fe1417b" width=500 hight=250>
@@ -100,20 +104,12 @@ Install the required Python dependencies:
 With the installation completed, you should now have all the necessary components and dependencies ready to run the Endless-GIF-Fixer-NERF project.
 
 ## Additional Notes
-
 The Endless-GIF-Fixer-NERF project utilizes the instant-ngp (NERF) repository as a submodule. Make sure to check the linked repository for more details on NERF implementation.
 
 Please follow the project steps carefully and ensure that all dependencies are correctly installed before running the solution.
-
-## Disclaimer: 
-This README provides an overview of the project and its approach to fixing endless GIFs using NERF. For in-depth instructions and code implementations, refer to the source code and accompanying documentation in the repository.
 
 ## Acknowledgments
 This project is inspired by the amazing work in the field of neural rendering, and it builds upon the advancements made by the instant-ngp (NERF) repository.
 
 ## License
 This project is licensed under the MIT License. Feel free to use, modify, and distribute it according to the terms of the license.
-
-
-![image](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/8d9e1d05-1a46-4ccd-adf6-99f1a69c9327)
-![image](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/55bbc0ac-8a3b-4456-8ec2-ee488221883a)
