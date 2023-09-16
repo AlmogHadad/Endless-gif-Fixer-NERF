@@ -24,10 +24,9 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
  
 7. creating fixed gif
 
-## image from nerf (from train set)
-### guess the fake image:
-<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/89c2bc60-f62f-49be-a3ff-10afd64141c9" width=500 hight=250>
-<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/791ee1ad-3be5-464a-9406-edcc8fe1417b" width=500 hight=250>
+![plot](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/5424123a-45a1-402b-ad4d-7e61d98926d5)
+![fixed (1)](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/0584eb48-0fed-4b0f-9c42-cfb5a9abcac6)
+
 
 
 ## solution ways - gap between the end and start point
@@ -102,6 +101,11 @@ Install the required Python dependencies:
 `pip install -r requirements.txt`
 
 With the installation completed, you should now have all the necessary components and dependencies ready to run the Endless-GIF-Fixer-NERF project.
+
+## image from nerf (from train set)
+### guess the fake image:
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/89c2bc60-f62f-49be-a3ff-10afd64141c9" width=500>
+<img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/791ee1ad-3be5-464a-9406-edcc8fe1417b" width=500>
 
 ## Additional Notes
 The Endless-GIF-Fixer-NERF project utilizes the instant-ngp (NERF) repository as a submodule. Make sure to check the linked repository for more details on NERF implementation.
