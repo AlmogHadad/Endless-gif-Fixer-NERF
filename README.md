@@ -25,7 +25,7 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 7. creating fixed gif
 
 <div style="display: flex; justify-content: center;">
-  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/5424123a-45a1-402b-ad4d-7e61d98926d5" width="400">
+  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/2d52d6b6-cf24-4b8d-84af-c603c43b9981" width="400">
   <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/0584eb48-0fed-4b0f-9c42-cfb5a9abcac6" width="400">
 </div>
 
