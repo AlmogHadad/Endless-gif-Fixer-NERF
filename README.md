@@ -25,10 +25,9 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 7. creating fixed gif
 
 ## result
-![plot (3)](https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/cc4e0190-a011-4064-a820-4d562bb7c4f0)
 
 <div style="display: flex; justify-content: center;">
-  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/5db58d44-ad2c-4922-bd39-3c58d46d9879">
+  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/cc4e0190-a011-4064-a820-4d562bb7c4f0">
 </div>
 
 ## solution ways - gap between the end and start point
