@@ -27,8 +27,8 @@ using instant-ngp (NERF) repo (submodule in our project): https://github.com/NVl
 ## result
 ### original:
 
-<div style="style="max-width: 70%;">
-  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/cd54bf26-dcb9-4b65-a003-cb0ed20e0e00">
+<div>
+  <img src="https://github.com/AlmogHadad/Endless-gif-Fixer-NERF/assets/77130590/cd54bf26-dcb9-4b65-a003-cb0ed20e0e00" width="360" height="640">
 </div>
 
 ## after our algorithm:
